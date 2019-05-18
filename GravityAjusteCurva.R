@@ -15,10 +15,20 @@ tam = length(gravedad)
 z <- lm(gravedad~(poly(latitud,3)+poly(altitud,3)))#splinefun(1:tam,latitud)
 z$coefficients
 
-image(z, altitud ~ latitud,d=100,col=rainbow(100))
+pdf(file = "gravity.pdf")
+image(z, altitud ~ latitud,d=100,col=rev(rainbow(200)))
 contour(z, altitud ~ latitud)
-persp(z, altitud ~ latitud,theta=30,phi=30,col=rainbow(40),zlab="gravedad",
-      contours = list(z="top", col="blue"))
+persp(z, altitud ~ latitud,col = rev(rainbow(100, s = 1, v = 1, start = 0, end = 0.7))
+      ,zlab="gravedad", contours = list(z="top", col="blue"))
+persp(z, altitud ~ latitud,theta=30,phi=30,col = rev(rainbow(100, s = 1, v = 1, start = 0, end = 0.7))
+      ,zlab="gravedad", contours = list(z="top", col="blue"))
+persp(z, altitud ~ latitud,theta=90,phi=0,col = rev(rainbow(100, s = 1, v = 1, start = 0, end = 0.7))
+      ,zlab="gravedad" )#contours = list(z="top", col="blue"))
+persp(z, altitud ~ latitud,theta=0,phi=0,col = rev(rainbow(100, s = 1, v = 1, start = 0, end = 0.7))
+      ,zlab="gravedad", contours = list(z="top", col="blue"))
+dev.off()
+
+
 
 datosAjustados = data.frame(Lat = latitud, Alt = altitud, Fitted = fitted(z))
 
@@ -60,15 +70,18 @@ error <- function(exp, teo){
   
 }
 
+plot3d(datosAjustados$Lat,datosAjustados$Alt,datosAjustados$Fitted)
+
 grav = 0
 grav = gravedadTeorica(latitud)
 
 err = 0
 err = error(gravedad,grav)
 err2 = error(datosAjustados$Fitted,grav)
-
+pdf(file="qqnorms.pdf")
 qqnorm(err)
 qqline(err)
 
 qqnorm(err2)
 qqline(err)
+dev.off()
