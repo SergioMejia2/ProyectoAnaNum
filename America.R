@@ -1,7 +1,7 @@
 set.seed(417)
 rm(list=ls())
 library(plotly)
-data<-read.csv("https://raw.githubusercontent.com/SergioMejia2/AnaNum1910/master/Proyecto/datacsv.csv")
+data<-read.csv("https://raw.githubusercontent.com/SergioMejia2/ProyectoAnaNum/master/AmericaData.csv")
 
 gravedad =  data$Gravedad
 latitud = data$Latitud
@@ -65,13 +65,5 @@ sizes[length(sizes)+1] = d/(60000)
 
 cat(length(sizes), " ", length(cities), length(zm))
 
-ax <- list(
-  title = "",
-  zeroline = FALSE,
-  showline = FALSE,
-  showticklabels = FALSE,
-  showgrid = FALSE
-)
-plot_ly(x=xm, y=ym, z=zm, projection = list(x=list(show=FALSE),y=list(show=FALSE),z=list(show=FALSE)),type="scatter3d", mode="markers", name="Earth",text=city_info,  projection = list(x=(show=FALSE)),hoverinfo='text',
-        marker = list(size=sizes, sizemin=3, color=colors, colorscale = c('#FFE1A1', '#683531'), showscale = FALSE, opacity=1)) %>% layout(scene = list(xaxis=ax,yaxis=ax,zaxis=ax))
-p
+plot_ly(x=xm, y=ym, z=zm, type="scatter3d", mode="markers", name="Earth",text=city_info,  projection = list(x=(show=FALSE)),hoverinfo='text',
+        marker = list(size=sizes, sizemin=3, color=colors, colorscale = c('#FFE1A1', '#683531'), showscale = TRUE, opacity=1))

@@ -70,10 +70,10 @@ err2 = error(datosAjustados$Fitted,grav)
 # Define UI for application that draws a histogram
 ui <- navbarPage("Analisis de la Gravedad",
     
-    tabPanel("Imagen", mainPanel(plotOutput("Imagen"))
+    tabPanel("Imagen", mainPanel(plotOutput("Imagen"),textOutput("Description"))
     ),
     tabPanel("Contorno",
-        mainPanel(plotOutput("Contorno"))
+        mainPanel(plotOutput("Contorno"),textOutput("Description2"))
     ),
     tabPanel("Perspectiva",
       sidebarLayout(
@@ -111,10 +111,10 @@ ui <- navbarPage("Analisis de la Gravedad",
 server <- function(input, output, session) {
     output$Imagen <- renderPlot({
       output$Description <- renderText("DESCRIPCION URGENTE ACA!!!!!")
-      image(z, altitud ~ latitud,d=100,col=rev(rainbow(200)))})
+      image(z, altitud ~ latitud,d=100,col=rev(rainbow(100, s = 1, v = 1, start = 0.1, end = 0.85)))})
     output$Contorno <- renderPlot({
-      output$Description <- renderText("DESCRIPCION URGENTE ACA!!!!! 2")
-      contour(z, altitud ~ latitud)
+      output$Description2 <- renderText("DESCRIPCION URGENTE ACA!!!!! 2")
+      contour(z, altitud ~ latitud, labcex = 1.5)
       })
     output$Perspectiva <- renderPlot({
       output$Description <- renderText("DESCRIPCION URGENTE ACA!!!!! 3")
@@ -162,8 +162,9 @@ server <- function(input, output, session) {
       
       
       altitud = altitud+d
-      altitud = altitud*1.1
+      altitud = altitud*exp(1)^(0.0001*(altitud-12741500))
       
+        
       for(i in 1:length(longitud))
       {
         if(longitud[i] < 0)
